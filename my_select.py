@@ -182,7 +182,7 @@ def select_12(group_id_number, course_id_number):
 
 SELECTS = {
     "Znajdź 5 studentów z najwyższą średnią ocen ze wszystkich przedmiotów.": select_1,
-    "Znajdź studenta z najwyższą średnią ocen z określonego przedmiotu.": lambda: select_2(
+    "Znajdź studenta (studentów) z najwyższą średnią ocen z określonego przedmiotu.": lambda: select_2(
         1
     ),
     "Znajdź średni wynik w grupach dla określonego przedmiotu.": lambda: select_3(1),
