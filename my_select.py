@@ -1,4 +1,5 @@
 from sqlalchemy import select, desc, func
+from sqlalchemy.types import Numeric
 
 from models import Group, Student, Lecturer, Course, Grade
 from db_session import session
@@ -9,7 +10,9 @@ def select_1():
         select(
             Student.id,
             Student.student_name,
-            func.avg(Grade.grade).label("avg_grade"),
+            func.round(func.avg(Grade.grade).cast(Numeric(10, 3)), 3).label(
+                "avg_grade"
+            ),
         )
         .join(Grade)
         .group_by(Student.id)
@@ -45,7 +48,9 @@ def select_3(course_id_number):
         select(
             Course.course_name.label("przedmiot"),
             Group.group_name.label("klasa"),
-            func.avg(Grade.grade).label("avg_grade"),
+            func.round(func.avg(Grade.grade).cast(Numeric(10, 3)), 3).label(
+                "avg_grade"
+            ),
         )
         .join(Student, Grade.student_id == Student.id)
         .join(Course, Grade.course_id == Course.id)
@@ -60,7 +65,9 @@ def select_4():
     stmt = (
         select(
             Group.group_name.label("klasa"),
-            func.avg(Grade.grade).label("srednia_ocen_klasy"),
+            func.round(func.avg(Grade.grade).cast(Numeric(10, 3)), 3).label(
+                "srednia_ocen_klasy"
+            ),
         )
         .join(Student, Grade.student_id == Student.id)
         .join(Course, Grade.course_id == Course.id)
@@ -108,7 +115,9 @@ def select_8(lecturer_id_number):
         select(
             Course.course_name.label("przedmiot"),
             Lecturer.lecturer_name.label("wykladowca"),
-            func.avg(Grade.grade).label("srednia_ocen"),
+            func.round(func.avg(Grade.grade).cast(Numeric(10, 3)), 3).label(
+                "srednia_ocen"
+            ),
         )
         .join(Course, Grade.course_id == Course.id)
         .join(Lecturer, Course.lecturer_id == Lecturer.id)
@@ -150,7 +159,9 @@ def select_11(lecturer_id_number, student_id_number):
         select(
             Lecturer.lecturer_name.label("wykladowca"),
             Student.student_name.label("student"),
-            func.avg(Grade.grade).label("srednia_ocen"),
+            func.round(func.avg(Grade.grade).cast(Numeric(10, 3)), 3).label(
+                "srednia_ocen"
+            ),
         )
         .join(Course, Grade.course_id == Course.id)
         .join(Student, Grade.student_id == Student.id)
